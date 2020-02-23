@@ -1,18 +1,18 @@
 package com.mrityunjay.jpahibernate.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "instructor")
+@Table(name = "instructor_one_to_many")
 public class Instructor {
 
 	@Id
@@ -28,16 +28,20 @@ public class Instructor {
 
 	@Column(name = "email")
 	private String email;
+
+	// Unidirectional ..
+//	@OneToMany(cascade = CascadeType.ALL)
+//	private List<Course> courses = new ArrayList<Course>();
 	
-	@OneToOne(cascade = CascadeType.ALL, mappedBy="instructor" , fetch=FetchType.LAZY)
-	private InstructorDetail instructorDetail;
-	
+    @OneToMany(mappedBy = "instructor", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+    	      CascadeType.REFRESH })
+    private List<Course> courses;
+
 	public Instructor() {
 
-    }
+	}
 
 	public Instructor(String firstName, String lastName, String email) {
-		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -75,14 +79,11 @@ public class Instructor {
 		this.email = email;
 	}
 
-	public InstructorDetail getInstructorDetail() {
-		return instructorDetail;
+	public List<Course> getCourses() {
+		return courses;
 	}
 
-	public void setInstructorDetail(InstructorDetail instructorDetail) {
-		this.instructorDetail = instructorDetail;
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
 	}
-	
-	
-
 }

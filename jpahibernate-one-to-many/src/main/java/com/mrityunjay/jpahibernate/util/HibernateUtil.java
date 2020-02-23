@@ -8,16 +8,12 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
+import com.mrityunjay.jpahibernate.entity.Course;
 import com.mrityunjay.jpahibernate.entity.Instructor;
-import com.mrityunjay.jpahibernate.entity.InstructorDetail;
 
-/**
- * 
- * @author mrityunjaykumar
- *
- */
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
+
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
@@ -29,23 +25,24 @@ public class HibernateUtil {
                 settings.put(Environment.URL, "jdbc:mysql://localhost:3306/hibernate_db_test?useSSL=false");
                 settings.put(Environment.USER, "root");
                 settings.put(Environment.PASS, "ankitkumar1992");
-                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
+                settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
 
                 settings.put(Environment.SHOW_SQL, "true");
 
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
 
-                settings.put(Environment.HBM2DDL_AUTO, "update");
+                settings.put(Environment.HBM2DDL_AUTO, "create-drop");
 
                 configuration.setProperties(settings);
-
                 configuration.addAnnotatedClass(Instructor.class);
-                configuration.addAnnotatedClass(InstructorDetail.class);
+                configuration.addAnnotatedClass(Course.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();
-
+                System.out.println("Hibernate Java Config serviceRegistry created");
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+                return sessionFactory;
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

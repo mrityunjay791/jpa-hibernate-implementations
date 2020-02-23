@@ -48,19 +48,20 @@ public class InstructorDao {
 
 			// start a transaction
 			transaction = session.beginTransaction();
-			Instructor instructorTemp = session.get(Instructor.class, instructor.getId());
-			if(instructorTemp != null) {
-				InstructorDetail instructorDetail = new InstructorDetail(instructor.getInstructorDetail().getYoutubeChannel(), instructor.getInstructorDetail().getHobby());
-				instructorDetail.setId(instructor.getInstructorDetail().getId());
-				instructorTemp.setEmail(instructor.getEmail());
-				instructorTemp.setFirstName(instructor.getFirstName());
-				
-				instructorTemp.setInstructorDetail(instructorDetail);
-				instructorTemp.setLastName(instructor.getLastName());
-				
-				session.update(instructorTemp); // Update
-			}
-			
+//			Instructor instructorTemp = session.get(Instructor.class, instructor.getId());
+//			if(instructorTemp != null) {
+//				InstructorDetail instructorDetail = new InstructorDetail(instructor.getInstructorDetail().getYoutubeChannel(), instructor.getInstructorDetail().getHobby());
+//				instructorDetail.setId(instructor.getInstructorDetail().getId());
+//				instructorTemp.setEmail(instructor.getEmail());
+//				instructorTemp.setFirstName(instructor.getFirstName());
+//				
+//				instructorTemp.setInstructorDetail(instructorDetail);
+//				instructorTemp.setLastName(instructor.getLastName());
+//				
+//				session.update(instructorTemp); // Update
+//			}
+//			
+			session.update(instructor);
 			// commit transaction
 			transaction.commit();
 		} catch (Exception e) {
